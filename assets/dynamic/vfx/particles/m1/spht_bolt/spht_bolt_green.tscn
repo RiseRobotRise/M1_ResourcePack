@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://turp7odocfat"]
+[gd_scene load_steps=14 format=3 uid="uid://turp7odocfat"]
 
 [ext_resource type="Material" uid="uid://xtsnohpvfkex" path="res://assets/dynamic/vfx/particles/m1/spht_bolt/frames/hit/animation_material.tres" id="1_d1ivp"]
 [ext_resource type="Texture2D" uid="uid://5uugq5iyejur" path="res://assets/dynamic/vfx/particles/m1/spht_bolt/frames/spawn/spawn2.png" id="2_6h5my"]
@@ -107,9 +107,86 @@ tracks/2/keys = {
 "values": [true, false]
 }
 
+[sub_resource type="Animation" id="Animation_m1tbq"]
+resource_name = "spawn"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("idle:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("spawn:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_bjgka"]
+resource_name = "hit"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("idle:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hit:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_0c11i"]
+resource_name = "idle"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("idle:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_15ox7"]
 _data = {
-"debug_cycle": SubResource("Animation_ek87c")
+"debug_cycle": SubResource("Animation_ek87c"),
+"hit": SubResource("Animation_bjgka"),
+"idle": SubResource("Animation_0c11i"),
+"spawn": SubResource("Animation_m1tbq")
 }
 
 [node name="spht_bolt_green" type="Node3D"]
@@ -134,6 +211,7 @@ process_material = SubResource("ParticleProcessMaterial_pf0sg")
 draw_pass_1 = SubResource("QuadMesh_5tdr4")
 
 [node name="idle" type="GPUParticles3D" parent="."]
+visible = false
 material_override = SubResource("StandardMaterial3D_isb1a")
 amount = 10
 lifetime = 0.15
