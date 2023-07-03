@@ -1,0 +1,151 @@
+[gd_scene load_steps=11 format=3 uid="uid://turp7odocfat"]
+
+[ext_resource type="Material" uid="uid://xtsnohpvfkex" path="res://assets/dynamic/vfx/particles/m1/spht_bolt/frames/hit/animation_material.tres" id="1_d1ivp"]
+[ext_resource type="Texture2D" uid="uid://5uugq5iyejur" path="res://assets/dynamic/vfx/particles/m1/spht_bolt/frames/spawn/spawn2.png" id="2_6h5my"]
+[ext_resource type="Texture2D" uid="uid://df1mr6mwqc40x" path="res://assets/dynamic/vfx/particles/m1/spht_bolt/frames/idle/idle.png" id="3_umh1i"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pf0sg"]
+direction = Vector3(0, 0, 0)
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 0.1
+initial_velocity_max = 0.1
+linear_accel_min = 0.1
+linear_accel_max = 0.1
+radial_accel_min = 5.76
+radial_accel_max = 5.76
+tangential_accel_min = -21.58
+damping_min = 16.55
+damping_max = 16.55
+anim_speed_min = 2.0
+anim_speed_max = 2.0
+sub_emitter_mode = 2
+sub_emitter_amount_at_end = 1
+sub_emitter_keep_velocity = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_5tdr4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vhwv0"]
+blend_mode = 1
+cull_mode = 2
+depth_draw_mode = 2
+no_depth_test = true
+shading_mode = 0
+albedo_texture = ExtResource("2_6h5my")
+disable_receive_shadows = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 6
+particles_anim_loop = false
+grow_amount = -2.532
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_isb1a"]
+blend_mode = 1
+cull_mode = 2
+depth_draw_mode = 2
+no_depth_test = true
+shading_mode = 0
+albedo_texture = ExtResource("3_umh1i")
+disable_receive_shadows = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 5
+particles_anim_v_frames = 5
+particles_anim_loop = true
+grow_amount = -2.532
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_27f85"]
+emission_shape = 1
+emission_sphere_radius = 0.01
+direction = Vector3(0, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+damping_min = 30.94
+damping_max = 46.06
+anim_speed_min = 2.0
+anim_speed_max = 2.0
+sub_emitter_keep_velocity = true
+
+[sub_resource type="Animation" id="Animation_ek87c"]
+resource_name = "debug_cycle"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("idle:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hit:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("spawn:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_15ox7"]
+_data = {
+"debug_cycle": SubResource("Animation_ek87c")
+}
+
+[node name="spht_bolt_green" type="Node3D"]
+
+[node name="Hit" type="GPUParticles3D" parent="."]
+material_override = ExtResource("1_d1ivp")
+emitting = false
+amount = 3
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_pf0sg")
+draw_pass_1 = SubResource("QuadMesh_5tdr4")
+
+[node name="spawn" type="GPUParticles3D" parent="."]
+material_override = SubResource("StandardMaterial3D_vhwv0")
+emitting = false
+amount = 5
+one_shot = true
+explosiveness = 1.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_pf0sg")
+draw_pass_1 = SubResource("QuadMesh_5tdr4")
+
+[node name="idle" type="GPUParticles3D" parent="."]
+material_override = SubResource("StandardMaterial3D_isb1a")
+amount = 10
+lifetime = 0.15
+process_material = SubResource("ParticleProcessMaterial_27f85")
+draw_pass_1 = SubResource("QuadMesh_5tdr4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_15ox7")
+}
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(0.415686, 1, 0, 1)
+shadow_enabled = true
+omni_range = 4.22839
